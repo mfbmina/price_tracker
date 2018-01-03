@@ -6,6 +6,8 @@ defmodule PriceTracker.Product do
     field :price, :integer
     field :product_name, :string
 
+    has_many :price_changes, PriceTracker.PriceChange
+
     timestamps()
   end
 
