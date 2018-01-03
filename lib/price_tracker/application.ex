@@ -6,10 +6,13 @@ defmodule PriceTracker.Application do
   use Application
 
   def start(_type, _args) do
+    import Supervisor.Spec
+
     # List all child processes to be supervised
     children = [
       # Starts a worker by calling: PriceTracker.Worker.start_link(arg)
       # {PriceTracker.Worker, arg},
+      PriceTracker.Repo,
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
