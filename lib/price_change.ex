@@ -12,7 +12,7 @@ defmodule PriceTracker.PriceChange do
 
   def changeset(price_change, params \\ %{}) do
     price_change
-    |> Ecto.Changeset.cast(params, [:price, :percentage_change])
-    |> Ecto.Changeset.validate_required([:price, :percentage_change])
+    |> Ecto.Changeset.cast(params, [:product_id, :price, :percentage_change])
+    |> Ecto.Changeset.validate_required([:product_id, :price, :percentage_change])
   end
 end

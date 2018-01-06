@@ -28,14 +28,14 @@ defmodule PriceTracker do
       product = PriceTracker.Product |> PriceTracker.Repo.get_by(external_product_id: Integer.to_string(api_product.id))
       case { product, api_product.discontinued } do
         { nil, false } -> attributes(api_product) |> PriceTracker.CreateProductService.call
+        { %PriceTracker.Product{}, _ } -> PriceTracker.UpdateProductService.call(product, attributes(api_product))
         _ -> nil
       end
     end
   end
 
   defp convert_price(price) do
-    { total, _trash } = Regex.replace(~r/\D/, price, "")
-    |> Integer.parse
+    { total, _ } = Regex.replace(~r/\D/, price, "") |> Integer.parse
     total
   end
 
