@@ -24,7 +24,7 @@ defmodule PriceTracker.UpdateProductServiceTest do
   test "returns :ok when there are no differences" do
     { :ok, product } = %PriceTracker.Product{product_name: "name", price: 100, external_product_id: "1"} |> PriceTracker.Repo.insert
     attributes = %{product_name: "name", price: 100, external_product_id: "1"}
-    assert { :ok, nil } == PriceTracker.UpdateProductService.call(product, attributes)
+    assert { :nothing, nil } == PriceTracker.UpdateProductService.call(product, attributes)
   end
 
   test "not print error message when there are no differences" do

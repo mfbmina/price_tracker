@@ -19,7 +19,7 @@ defmodule PriceTracker.UpdateProductService do
       iex> { :ok, product } = %PriceTracker.Product{product_name: "name", price: 100, external_product_id: "1"} |> PriceTracker.Repo.insert
       iex> attributes = %{product_name: "name", price: 100, external_product_id: "1"}
       iex> PriceTracker.UpdateProductService.call(product, attributes)
-      { :ok, nil }
+      { :nothing, nil }
 
       iex> { :ok, product } = %PriceTracker.Product{product_name: "name", price: 100, external_product_id: "1"} |> PriceTracker.Repo.insert
       iex> attributes = %{product_name: "name 2", price: 1000, external_product_id: "1"}
@@ -46,7 +46,7 @@ defmodule PriceTracker.UpdateProductService do
       { false, _ } ->
         mismatch_error(product.product_name, attributes.product_name)
         { :error, product }
-      _ -> { :ok, nil }
+      _ -> { :nothing, nil }
     end
   end
 

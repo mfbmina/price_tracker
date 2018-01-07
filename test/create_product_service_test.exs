@@ -35,7 +35,7 @@ defmodule PriceTracker.CreateProductServiceTest do
 
   test "do nothing when product is discontinued" do
     attributes = %{product_name: "name", price: 1000, external_product_id: "1", discontinued: true}
-    assert { :ok, nil } == PriceTracker.CreateProductService.call(attributes)
+    assert { :nothing, nil } == PriceTracker.CreateProductService.call(attributes)
   end
 
   test "not print successful message when product is discontinued" do
