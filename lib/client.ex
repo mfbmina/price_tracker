@@ -10,12 +10,12 @@ defmodule PriceTracker.Client do
 
   ## Examples
 
-      iex> PriceTracker.Client.process_url("")
-      "https://omegapricinginc.com/pricing/records.json"
+      iex> PriceTracker.Client.process_url("") =~ "https://omegapricinginc.com/pricing/records.json"
+      true
 
   """
   def process_url(_url) do
-    "https://omegapricinginc.com/pricing/records.json"
+    "https://omegapricinginc.com/pricing/records.json?api_key=#{System.get_env("API_KEY")}"
   end
 
   @doc """

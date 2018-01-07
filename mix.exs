@@ -22,7 +22,7 @@ defmodule PriceTracker.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_doc, "~> 0.12"},
+      {:ex_doc, "~> 0.12", only: [:dev, :test]},
       {:ecto, "~> 2.0"},
       {:postgrex, "~> 0.11"},
       {:httpoison, "~> 0.13"},
