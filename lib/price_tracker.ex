@@ -1,25 +1,24 @@
 defmodule PriceTracker do
   @moduledoc """
-  Documentation for PriceTracker.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> PriceTracker.hello
-      :world
-
+  PriceTracker module
   """
 
   @client_api Application.get_env(:price_tracker, :client_api)
 
+  @doc """
+  Run app to update prices.
+
+  ## Examples
+
+      iex> PriceTracker.call
+      :ok
+
+  """
   def call do
     { status, response } = @client_api.make_request(:get)
     case status do
       :ok -> response.body |> update_prices
-      :error -> "Unexpected error"
+      :error -> IO.puts "Unexpected error"
     end
   end
 

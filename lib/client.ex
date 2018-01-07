@@ -1,10 +1,26 @@
 defmodule PriceTracker.Client do
+  @moduledoc """
+  API Client.
+  """
+
   use HTTPoison.Base
 
-  def process_url(url) do
-    "https://omegapricinginc.com/pricing/records.json" <> url
+  @doc """
+  Returns the URL for fetching products.
+
+  ## Examples
+
+      iex> PriceTracker.Client.process_url("")
+      "https://omegapricinginc.com/pricing/records.json"
+
+  """
+  def process_url(_url) do
+    "https://omegapricinginc.com/pricing/records.json"
   end
 
+  @doc """
+  Process the response body.
+  """
   def process_response_body(body) do
     body
     |> Poison.decode!

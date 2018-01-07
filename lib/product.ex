@@ -1,4 +1,8 @@
 defmodule PriceTracker.Product do
+  @moduledoc """
+  Product schema.
+  """
+
   use Ecto.Schema
 
   schema "products" do

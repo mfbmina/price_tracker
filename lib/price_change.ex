@@ -1,4 +1,8 @@
 defmodule PriceTracker.PriceChange do
+  @moduledoc """
+  PriceChange schema.
+  """
+
   use Ecto.Schema
 
   schema "price_changes" do
