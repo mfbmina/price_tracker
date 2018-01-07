@@ -1,6 +1,6 @@
 defmodule PriceTracker.UpdateProductServiceTest do
   use ExUnit.Case
-  import ExUnit.CaptureIO
+  import ExUnit.CaptureLog
   doctest PriceTracker.UpdateProductService
 
   test "updates the Product when name is the same and price is different" do
@@ -18,7 +18,7 @@ defmodule PriceTracker.UpdateProductServiceTest do
       PriceTracker.UpdateProductService.call(product, attributes)
     end
 
-    refute capture_io(execute_main) =~ "ERROR: Product name is mismatched."
+    refute capture_log(execute_main) =~ "ERROR: Product name is mismatched."
   end
 
   test "returns :ok when there are no differences" do
@@ -34,7 +34,7 @@ defmodule PriceTracker.UpdateProductServiceTest do
       PriceTracker.UpdateProductService.call(product, attributes)
     end
 
-    refute capture_io(execute_main) =~ "ERROR: Product name is mismatched."
+    refute capture_log(execute_main) =~ "ERROR: Product name is mismatched."
   end
 
   test "returns :error when name is different" do
@@ -43,13 +43,13 @@ defmodule PriceTracker.UpdateProductServiceTest do
     assert { :error, product } == PriceTracker.UpdateProductService.call(product, attributes)
   end
 
-  test "prints error message when there are no differences" do
+  test "logs error message when name is different" do
     execute_main = fn ->
       { :ok, product } = %PriceTracker.Product{product_name: "name", price: 100, external_product_id: "1"} |> PriceTracker.Repo.insert
       attributes = %{product_name: "name 2", price: 100, external_product_id: "1"}
       PriceTracker.UpdateProductService.call(product, attributes)
     end
 
-    assert capture_io(execute_main) =~ "ERROR: Product name is mismatched."
+    assert capture_log(execute_main) =~ "Product name is mismatched."
   end
 end

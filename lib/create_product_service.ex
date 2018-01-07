@@ -3,6 +3,8 @@ defmodule PriceTracker.CreateProductService do
   Creates a new product.
   """
 
+  require Logger
+
   @doc """
   Run to create a new product if the product isn't discontinued.
 
@@ -22,7 +24,7 @@ defmodule PriceTracker.CreateProductService do
         |> PriceTracker.Repo.insert
         case status do
           :ok ->
-            IO.puts "Create product ##{product.id}"
+            Logger.info "Create product ##{product.id}"
             { :ok, product }
           :error -> { :error, product }
         end

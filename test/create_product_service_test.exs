@@ -1,6 +1,6 @@
 defmodule PriceTracker.CreateProductServiceTest do
   use ExUnit.Case
-  import ExUnit.CaptureIO
+  import ExUnit.CaptureLog
   doctest PriceTracker.CreateProductService
 
   test "creates a Product" do
@@ -9,13 +9,13 @@ defmodule PriceTracker.CreateProductServiceTest do
     assert status == :ok
   end
 
-  test "prints successful message when creates a Product" do
+  test "logs successful message when creates a Product" do
     execute_main = fn ->
       attributes = %{product_name: "name", price: 1000, external_product_id: "1", discontinued: false}
       PriceTracker.CreateProductService.call(attributes)
     end
 
-    assert capture_io(execute_main) =~ "Create product #"
+    assert capture_log(execute_main) =~ "Create product #"
   end
 
   test "returns :error when create fails" do
@@ -30,7 +30,7 @@ defmodule PriceTracker.CreateProductServiceTest do
       PriceTracker.CreateProductService.call(attributes)
     end
 
-    refute capture_io(execute_main) =~ "Create product #"
+    refute capture_log(execute_main) =~ "Create product #"
   end
 
   test "do nothing when product is discontinued" do
@@ -44,6 +44,6 @@ defmodule PriceTracker.CreateProductServiceTest do
       PriceTracker.CreateProductService.call(attributes)
     end
 
-    refute capture_io(execute_main) =~ "Create product #"
+    refute capture_log(execute_main) =~ "Create product #"
   end
 end

@@ -3,6 +3,8 @@ defmodule PriceTracker.UpdateProductService do
   Updates a product price and create a price change.
   """
 
+  require Logger
+
   @doc """
   Run to update prices for an existing product if the API name still the same and price is different.
 
@@ -55,6 +57,6 @@ defmodule PriceTracker.UpdateProductService do
   end
 
   defp mismatch_error(db_name, api_name) do
-    IO.puts "ERROR: Product name is mismatched. DB: #{db_name} --- API: #{api_name}"
+    Logger.error "Product name is mismatched. DB: #{db_name} --- API: #{api_name}"
   end
 end

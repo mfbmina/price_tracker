@@ -1,6 +1,6 @@
 defmodule PriceTrackerTest do
   use ExUnit.Case
-  import ExUnit.CaptureIO
+  import ExUnit.CaptureLog
   doctest PriceTracker
 
   test "returns :ok" do
@@ -8,12 +8,12 @@ defmodule PriceTrackerTest do
     assert PriceTracker.call(date_range) == :ok
   end
 
-  test "prints messages" do
+  test "logs messages" do
     execute_main = fn ->
       date_range = Date.range(~D[2018-01-01], Date.utc_today)
       PriceTracker.call(date_range)
     end
 
-    assert capture_io(execute_main) =~ "ERROR: Product name is mismatched."
+    assert capture_log(execute_main) =~ "Product name is mismatched."
   end
 end
