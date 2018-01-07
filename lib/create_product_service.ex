@@ -4,7 +4,7 @@ defmodule PriceTracker.CreateProductService do
   """
 
   @doc """
-  Run to create a new product if the product isn't discounted.
+  Run to create a new product if the product isn't discontinued.
 
   ## Examples
 
@@ -16,14 +16,17 @@ defmodule PriceTracker.CreateProductService do
 
   """
   def call(attributes) do
-    { status, product } = %PriceTracker.Product{}
-    |> PriceTracker.Product.changeset(attributes)
-    |> PriceTracker.Repo.insert
-    case status do
-      :ok ->
-        IO.puts "Create product ##{product.id}"
-        { :ok, product }
-      :error -> { :error, product }
+    case attributes.discontinued do
+      false -> { status, product } = %PriceTracker.Product{}
+        |> PriceTracker.Product.changeset(attributes)
+        |> PriceTracker.Repo.insert
+        case status do
+          :ok ->
+            IO.puts "Create product ##{product.id}"
+            { :ok, product }
+          :error -> { :error, product }
+        end
+      true -> { :ok, nil }
     end
   end
 end

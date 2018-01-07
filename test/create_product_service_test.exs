@@ -4,14 +4,14 @@ defmodule PriceTracker.CreateProductServiceTest do
   doctest PriceTracker.CreateProductService
 
   test "creates a Product" do
-    attributes = %{product_name: "name", price: 1000, external_product_id: "1"}
+    attributes = %{product_name: "name", price: 1000, external_product_id: "1", discontinued: false}
     { status, _ } = PriceTracker.CreateProductService.call(attributes)
     assert status == :ok
   end
 
   test "prints successful message when creates a Product" do
     execute_main = fn ->
-      attributes = %{product_name: "name", price: 1000, external_product_id: "1"}
+      attributes = %{product_name: "name", price: 1000, external_product_id: "1", discontinued: false}
       PriceTracker.CreateProductService.call(attributes)
     end
 
@@ -19,14 +19,28 @@ defmodule PriceTracker.CreateProductServiceTest do
   end
 
   test "returns :error when create fails" do
-    attributes = %{product_name: "name", price: 1000}
+    attributes = %{product_name: "name", price: 1000, discontinued: false}
     { status, _ } = PriceTracker.CreateProductService.call(attributes)
     assert status == :error
   end
 
   test "not print successful message when a error happens" do
     execute_main = fn ->
-      attributes = %{product_name: "name", price: 1000}
+      attributes = %{product_name: "name", price: 1000, discontinued: false}
+      PriceTracker.CreateProductService.call(attributes)
+    end
+
+    refute capture_io(execute_main) =~ "Create product #"
+  end
+
+  test "do nothing when product is discontinued" do
+    attributes = %{product_name: "name", price: 1000, external_product_id: "1", discontinued: true}
+    assert { :ok, nil } == PriceTracker.CreateProductService.call(attributes)
+  end
+
+  test "not print successful message when product is discontinued" do
+    execute_main = fn ->
+      attributes = %{product_name: "name", price: 1000, external_product_id: "1", discontinued: true}
       PriceTracker.CreateProductService.call(attributes)
     end
 

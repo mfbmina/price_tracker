@@ -25,10 +25,9 @@ defmodule PriceTracker do
   defp update_prices(body) do
     Enum.each body.productRecords, fn(api_product) ->
       product = PriceTracker.Product |> PriceTracker.Repo.get_by(external_product_id: Integer.to_string(api_product.id))
-      case { product, api_product.discontinued } do
-        { nil, false } -> attributes(api_product) |> PriceTracker.CreateProductService.call
-        { %PriceTracker.Product{}, _ } -> PriceTracker.UpdateProductService.call(product, attributes(api_product))
-        _ -> nil
+      case product do
+        nil -> attributes(api_product) |> PriceTracker.CreateProductService.call
+        %PriceTracker.Product{} -> PriceTracker.UpdateProductService.call(product, attributes(api_product))
       end
     end
   end
@@ -42,7 +41,8 @@ defmodule PriceTracker do
     %{
       external_product_id: Integer.to_string(product.id),
       price: convert_price(product.price),
-      product_name: product.name
+      product_name: product.name,
+      discontinued: product.discontinued
     }
   end
 end
