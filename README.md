@@ -9,12 +9,12 @@ Elixir app for tracking prices.
 - Postgres
 - Libs listed on `mix.exs`
 
-## Decisions
+## Decisions & Comments
 
 - I used Environment variables to manage the API KEY, because it was the easiest way.
-- The external product id is a string on database, because some there is no definition if the API will always return an integer.
-- You can expose `PriceTracker.call()` as a task or script.
-- I'm still learning Elixir, so I tried doing the best practices that I know.
+- The external product id is a string on database, because some there is no definition if the API will always return an integer as ID (some old projects use strings).
+- You can use this repo as a task or script.
+- I'm still studying Elixir, so I tried doing the best practices that I know.
 
 ## Setup
 
@@ -42,7 +42,7 @@ Elixir app for tracking prices.
 ### Run local
 
 - `$ iex -S mix`
-- `iex> PriceTracker.call()`
+- `iex> Date.range(~D[2018-01-01], Date.utc_today) |> PriceTracker.call`
 
 ### Run the test suite
 

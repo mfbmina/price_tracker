@@ -10,12 +10,13 @@ defmodule PriceTracker do
 
   ## Examples
 
-      iex> PriceTracker.call
+      iex> date_range = Date.range(~D[2018-01-01], Date.utc_today)
+      iex> PriceTracker.call(date_range)
       :ok
 
   """
-  def call do
-    { status, response } = @client_api.make_request(:get)
+  def call(date_range) do
+    { status, response } = @client_api.get!(date_range)
     case status do
       :ok -> response.body |> update_prices
       :error -> IO.puts "Unexpected error"

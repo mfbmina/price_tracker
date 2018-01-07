@@ -10,12 +10,14 @@ defmodule PriceTracker.Client do
 
   ## Examples
 
-      iex> PriceTracker.Client.process_url("") =~ "https://omegapricinginc.com/pricing/records.json"
+      iex> date_range = Date.range(~D[2018-01-01], Date.utc_today)
+      iex> PriceTracker.Client.process_url(date_range) =~ "https://omegapricinginc.com/pricing/records.json"
       true
 
   """
-  def process_url(_url) do
-    "https://omegapricinginc.com/pricing/records.json?api_key=#{System.get_env("API_KEY")}"
+  def process_url(date_range) do
+    date_params = "start_date=#{date_range.first |> Date.to_string}&end_date=#{date_range.last |> Date.to_string}"
+    "https://omegapricinginc.com/pricing/records.json?api_key=#{System.get_env("API_KEY")}&#{date_params}"
   end
 
   @doc """

@@ -3,7 +3,7 @@ defmodule PriceTracker.ClientMockTest do
   doctest PriceTracker.ClientMock
 
   test "returns the mocked response" do
-    assert PriceTracker.ClientMock.make_request(:get) == { :ok, %HTTPoison.Response{body: %{
+    assert PriceTracker.ClientMock.get!(nil) == { :ok, %HTTPoison.Response{body: %{
       productRecords: [
         %{category: "home-furnishings",discontinued: false, id: 123456, name: "Nice Chair",price: "$30.25"},
         %{category: "electronics", discontinued: true, id: 234567,name: "Black & White TV", price: "$43.77"},
