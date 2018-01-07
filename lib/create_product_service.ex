@@ -10,7 +10,7 @@ defmodule PriceTracker.CreateProductService do
 
       iex> { :ok, product } = %PriceTracker.Product{product_name: "name", price: 100, external_product_id: "1"} |> PriceTracker.Repo.insert
       iex> attributes = %{product_name: "name", price: 1000, external_product_id: "1", discontinued: false}
-      iex> { status, product } = PriceTracker.UpdateProductService.call(product, attributes)
+      iex> { status, _product } = PriceTracker.UpdateProductService.call(product, attributes)
       iex> status
       :ok
 
@@ -20,8 +20,10 @@ defmodule PriceTracker.CreateProductService do
     |> PriceTracker.Product.changeset(attributes)
     |> PriceTracker.Repo.insert
     case status do
-      :ok -> IO.puts "Create product ##{product.id}"
-      :error -> nil
+      :ok ->
+        IO.puts "Create product ##{product.id}"
+        { :ok, product }
+      :error -> { :error, product }
     end
   end
 end

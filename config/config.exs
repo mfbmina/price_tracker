@@ -2,13 +2,6 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
-config :price_tracker, PriceTracker.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  database: "price_tracker_repo",
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost"
-
 config :price_tracker, ecto_repos: [PriceTracker.Repo]
 
 # This configuration is loaded before any dependency and is restricted

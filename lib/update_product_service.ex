@@ -10,7 +10,7 @@ defmodule PriceTracker.UpdateProductService do
 
       iex> { :ok, product } = %PriceTracker.Product{product_name: "name", price: 100, external_product_id: "1"} |> PriceTracker.Repo.insert
       iex> attributes = %{product_name: "name", price: 1000, external_product_id: "1"}
-      iex> { status, product } = PriceTracker.UpdateProductService.call(product, attributes)
+      iex> { status, _ } = PriceTracker.UpdateProductService.call(product, attributes)
       iex> status
       :ok
 
@@ -21,7 +21,7 @@ defmodule PriceTracker.UpdateProductService do
 
       iex> { :ok, product } = %PriceTracker.Product{product_name: "name", price: 100, external_product_id: "1"} |> PriceTracker.Repo.insert
       iex> attributes = %{product_name: "name 2", price: 1000, external_product_id: "1"}
-      iex> { status, product } = PriceTracker.UpdateProductService.call(product, attributes)
+      iex> { status, _ } = PriceTracker.UpdateProductService.call(product, attributes)
       iex> status
       :error
 
@@ -32,9 +32,12 @@ defmodule PriceTracker.UpdateProductService do
         {status, price_change} = PriceTracker.CreatePriceChangeService.call(product, attributes)
         case status do
           :ok ->
-            case update_product(product, attributes) do
-              :ok -> { :ok, product }
-              :error -> price_change |> PriceTracker.Repo.delete
+            { update_status, updated_product } = update_product(product, attributes)
+            case update_status do
+              :ok -> { :ok, updated_product }
+              :error ->
+                price_change |> PriceTracker.Repo.delete
+                { :error, updated_product }
             end
           :error -> { :error, product }
         end
@@ -46,10 +49,9 @@ defmodule PriceTracker.UpdateProductService do
   end
 
   defp update_product(product, attributes) do
-    { status, _ } = product
+    product
     |> PriceTracker.Product.changeset(attributes)
     |> PriceTracker.Repo.update
-    status
   end
 
   defp mismatch_error(db_name, api_name) do
