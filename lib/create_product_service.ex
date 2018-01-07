@@ -21,17 +21,17 @@ defmodule PriceTracker.CreateProductService do
 
   """
   def call(%{discontinued: true}) do
-    { :nothing, nil }
+    {:nothing, nil}
   end
   def call(attributes) do
-    { status, product } = %PriceTracker.Product{}
+    {status, product} = %PriceTracker.Product{}
     |> PriceTracker.Product.changeset(attributes)
     |> PriceTracker.Repo.insert
     case status do
       :ok ->
         Logger.info "Create product ##{product.id}"
-        { :ok, product }
-      :error -> { :error, product }
+        {:ok, product}
+      :error -> {:error, product}
     end
   end
 end

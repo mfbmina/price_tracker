@@ -26,7 +26,8 @@ defmodule PriceTracker.Mixfile do
       {:ecto, "~> 2.0"},
       {:postgrex, "~> 0.11"},
       {:httpoison, "~> 0.13"},
-      {:poison, "~> 3.1"}
+      {:poison, "~> 3.1"},
+      {:credo, "~> 0.8", only: [:dev, :test], runtime: false}
     ]
   end
 end

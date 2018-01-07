@@ -16,7 +16,7 @@ defmodule PriceTracker do
 
   """
   def call(date_range) do
-    { status, response } = @client_api.get!(date_range)
+    {status, response} = @client_api.get!(date_range)
     case status do
       :ok -> response.body |> update_prices
       :error -> IO.puts "Unexpected error"
@@ -27,14 +27,14 @@ defmodule PriceTracker do
     Enum.each body.productRecords, fn(api_product) ->
       product = PriceTracker.Product |> PriceTracker.Repo.get_by(external_product_id: Integer.to_string(api_product.id))
       case product do
-        nil -> attributes(api_product) |> PriceTracker.CreateProductService.call
+        nil -> api_product |> attributes |> PriceTracker.CreateProductService.call
         %PriceTracker.Product{} -> PriceTracker.UpdateProductService.call(product, attributes(api_product))
       end
     end
   end
 
   defp convert_price(price) do
-    { total, _ } = Regex.replace(~r/\D/, price, "") |> Integer.parse
+    {total, _} = ~r/\D/ |> Regex.replace(price, "") |> Integer.parse
     total
   end
 

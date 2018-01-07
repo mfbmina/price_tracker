@@ -29,31 +29,30 @@ defmodule PriceTracker.UpdateProductService do
 
   """
   def call(product, attributes) do
-    case { product.product_name == attributes.product_name, product.price != attributes.price } do
-      { true, true } ->
-        {status, price_change} = PriceTracker.CreatePriceChangeService.call(product, attributes)
-        case status do
-          :ok ->
-            { update_status, updated_product } = update_product(product, attributes)
-            case update_status do
-              :ok -> { :ok, updated_product }
-              :error ->
-                price_change |> PriceTracker.Repo.delete
-                { :error, updated_product }
-            end
-          :error -> { :error, product }
-        end
-      { false, _ } ->
+    case {product.product_name == attributes.product_name, product.price != attributes.price} do
+      {true, true} -> update(product, attributes)
+      {false, _} ->
         mismatch_error(product.product_name, attributes.product_name)
-        { :error, product }
-      _ -> { :nothing, nil }
+        {:error, product}
+      _ -> {:nothing, nil}
     end
   end
 
-  defp update_product(product, attributes) do
-    product
-    |> PriceTracker.Product.changeset(attributes)
-    |> PriceTracker.Repo.update
+  defp update(product, attributes) do
+    {status, price_change} = PriceTracker.CreatePriceChangeService.call(product, attributes)
+    case status do
+      :ok ->
+        {update_status, updated_product} = product
+        |> PriceTracker.Product.changeset(attributes)
+        |> PriceTracker.Repo.update
+        case update_status do
+          :ok -> {:ok, updated_product}
+          :error ->
+            price_change |> PriceTracker.Repo.delete
+            {:error, updated_product}
+        end
+      :error -> {:error, product}
+    end
   end
 
   defp mismatch_error(db_name, api_name) do
