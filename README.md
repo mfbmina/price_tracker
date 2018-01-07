@@ -11,10 +11,17 @@ Elixir app for tracking prices.
 
 ## Decisions & Comments
 
+- I'm still studying Elixir, so I tried doing the best practices that I know.
 - I used Environment variables to manage the API KEY, because it was the easiest way.
 - The external product id is a string on database, because some there is no definition if the API will always return an integer as ID (some old projects use strings).
 - You can use this repo as a task or script.
-- I'm still studying Elixir, so I tried doing the best practices that I know.
+- I've choose dependencies based on their popularity.
+- Used `ex_doc` for documentation. It generates HTML files for the docs.
+- Used `ecto` to interact with the database. It helped my with all queries.
+- `postgrex` is a PostgreSQL driver for Elixir.
+- Used `httpoison` as HTTP client. It helped me building my API Client.
+- Used `poison` to parse JSON requests.
+- Followed `credo` (https://github.com/rrrene/credo) style guide. It helped my code consistency.
 
 ## Setup
 
@@ -36,14 +43,22 @@ Elixir app for tracking prices.
 
 ### Database setup
 
-- `$ mix ecto.create`
-- `$ mix ecto.migrate`
+```
+$ mix ecto.create
+$ mix ecto.migrate
+```
 
 ### Run local
 
-- `$ iex -S mix`
-- `iex> Date.range(~D[2018-01-01], Date.utc_today) |> PriceTracker.call`
+```
+$ iex -S mix
+iex> Date.range(~D[2018-01-01], Date.utc_today) |> PriceTracker.call
+```
 
 ### Run the test suite
 
 `$ mix test`
+
+### Generating docs
+
+`$ mix docs`
